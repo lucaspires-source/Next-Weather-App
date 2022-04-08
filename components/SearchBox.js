@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import cities from '../lib/city.list.json';
 
 export default function SearchBox() {
@@ -18,7 +19,11 @@ export default function SearchBox() {
         }
         const match = city.name.toLowerCase().startsWith(value.toLowerCase());
         if (match) {
-          matchingCities.push(city);
+          const cityData = {
+            ...city,
+            slug: `${city.name.toLowerCase().replace(/ /g, '-')}-${city.id}`,
+          };
+          matchingCities.push(cityData);
         }
       }
     }
@@ -28,6 +33,29 @@ export default function SearchBox() {
   return (
     <div className="search">
       <input type="text" placeholder="Search..." value={query} onChange={onChange} />
+      {query.length > 3 && (
+      <ul>
+        {results.length > 0 ? (
+          results.map((city) => (
+            <li key={city.slug}>
+              <Link href={`/location/${city.slug}`} passHref>
+                <a href="dummy">
+                  {city.name}
+                  {city.state ? `,${city.state}` : '' }
+                  <span>
+                    (
+                    {city.country}
+                    )
+                  </span>
+                </a>
+              </Link>
+            </li>
+          ))
+        ) : (
+          <li className="search__no-results"> No Results</li>
+        ) }
+      </ul>
+      )}
     </div>
   );
 }
