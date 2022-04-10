@@ -1,5 +1,4 @@
 import '../styles/main.scss';
-
 // eslint-disable-next-line react/prop-types
 function MyApp({ Component, pageProps }) {
   // eslint-disable-next-line react/jsx-props-no-spreading
