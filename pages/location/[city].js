@@ -64,6 +64,7 @@ export async function getServerSideProps(context) {
 export default function City({
   hourlyWeather, city, currentWeather, dailyWeather,
 }) {
+  console.log(hourlyWeather, currentWeather, dailyWeather);
   return (
     <div>
       <Head>
