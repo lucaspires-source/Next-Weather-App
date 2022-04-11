@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Head from 'next/head';
+import propTypes from 'prop-types';
 import cities from '../../lib/city.list.json';
 
 const getCity = (param) => {
@@ -72,3 +73,10 @@ export default function City({
     </div>
   );
 }
+
+City.propTypes = {
+  hourlyWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  city: propTypes.shape({ name: propTypes.string.isRequired }).isRequired,
+  currentWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  dailyWeather: propTypes.arrayOf(propTypes.object).isRequired,
+};
