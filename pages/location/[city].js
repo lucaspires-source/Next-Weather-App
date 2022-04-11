@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Head from 'next/head';
 import cities from '../../lib/city.list.json';
 
 const getCity = (param) => {
@@ -48,22 +49,26 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   }
-
-  console.log(data);
+  const hourlyWeather = getHourlyWeather(data.hourly);
   return {
     props: {
       city,
-      // currentWeather: data.current,
-      // dailyWeather: data.daily,
+      currentWeather: data.current,
+      dailyWeather: data.daily,
+      hourlyWeather,
     },
   };
 }
 
 export default function City({
-  hourlyData, city, currentWeather, dailyWeather,
+  hourlyWeather, city, currentWeather, dailyWeather,
 }) {
-  //  console.log(hourlyData, city, currentWeather, dailyWeather);
   return (
-    <div>Oi</div>
+    <div>
+      <Head>
+        <title>{city.name}</title>
+      </Head>
+
+    </div>
   );
 }
