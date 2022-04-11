@@ -17,6 +17,21 @@ const getCity = (param) => {
   }
   return null;
 };
+const getHourlyWeather = (hourlyData) => {
+  const current = new Date();
+  current.setHours(current.getHours(), 0, 0, 0);
+  const tomorrow = new Date(current);
+  tomorrow.setDate(current.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  // const currentTimeStamp = Math.floor(current.getTime() / 1000);
+  const tommorowTimeStamp = Math.floor(tomorrow.getTime() / 1000);
+
+  const todaysData = hourlyData.filter((data) => data.dt < tommorowTimeStamp);
+
+  return todaysData;
+};
+
 export async function getServerSideProps(context) {
   const city = getCity(context.params.city);
   if (!city) {
@@ -26,7 +41,7 @@ export async function getServerSideProps(context) {
   }
   const { lon, lat } = city.coord;
 
-  const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.apiKey}&units=metric&exclude=minutely`);
+  const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${process.env.apiKey}&units=metric&exclude=minutely`);
 
   if (!data) {
     return {
@@ -34,15 +49,20 @@ export async function getServerSideProps(context) {
     };
   }
 
+  console.log(data);
   return {
     props: {
-      data,
+      city,
+      // currentWeather: data.current,
+      // dailyWeather: data.daily,
     },
   };
 }
 
-export default function City({ data }) {
-  console.log(data);
+export default function City({
+  hourlyData, city, currentWeather, dailyWeather,
+}) {
+  //  console.log(hourlyData, city, currentWeather, dailyWeather);
   return (
     <div>Oi</div>
   );
