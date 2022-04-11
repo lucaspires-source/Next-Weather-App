@@ -1,4 +1,6 @@
 import axios from 'axios';
+import Head from 'next/head';
+import propTypes from 'prop-types';
 import cities from '../../lib/city.list.json';
 
 const getCity = (param) => {
@@ -17,6 +19,21 @@ const getCity = (param) => {
   }
   return null;
 };
+const getHourlyWeather = (hourlyData) => {
+  const current = new Date();
+  current.setHours(current.getHours(), 0, 0, 0);
+  const tomorrow = new Date(current);
+  tomorrow.setDate(current.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+
+  // const currentTimeStamp = Math.floor(current.getTime() / 1000);
+  const tommorowTimeStamp = Math.floor(tomorrow.getTime() / 1000);
+
+  const todaysData = hourlyData.filter((data) => data.dt < tommorowTimeStamp);
+
+  return todaysData;
+};
+
 export async function getServerSideProps(context) {
   const city = getCity(context.params.city);
   if (!city) {
@@ -26,24 +43,40 @@ export async function getServerSideProps(context) {
   }
   const { lon, lat } = city.coord;
 
-  const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.apiKey}&units=metric&exclude=minutely`);
+  const { data } = await axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${process.env.apiKey}&units=metric&exclude=minutely`);
 
   if (!data) {
     return {
       notFound: true,
     };
   }
-
+  const hourlyWeather = getHourlyWeather(data.hourly);
   return {
     props: {
-      data,
+      city,
+      currentWeather: data.current,
+      dailyWeather: data.daily,
+      hourlyWeather,
     },
   };
 }
 
-export default function City({ data }) {
-  console.log(data);
+export default function City({
+  hourlyWeather, city, currentWeather, dailyWeather,
+}) {
   return (
-    <div>Oi</div>
+    <div>
+      <Head>
+        <title>{city.name}</title>
+      </Head>
+
+    </div>
   );
 }
+
+City.propTypes = {
+  hourlyWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  city: propTypes.shape({ name: propTypes.string.isRequired }).isRequired,
+  currentWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  dailyWeather: propTypes.arrayOf(propTypes.object).isRequired,
+};
