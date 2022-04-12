@@ -265,7 +265,9 @@ h6 {
 
   &__sun-times {
     display: flex;
-
+    @media screen and (max-width: 425px) {
+      display: none;
+    }
     > div {
       &:not(:last-child) {
         margin-right: 20px;
