@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Head from 'next/head';
 import propTypes from 'prop-types';
+import moment from 'moment-timezone';
 import TodaysWeather from '../../components/TodaysWeather';
 import cities from '../../lib/city.list.json';
 
@@ -20,17 +21,10 @@ const getCity = (param) => {
   }
   return null;
 };
-const getHourlyWeather = (hourlyData) => {
-  const current = new Date();
-  current.setHours(current.getHours(), 0, 0, 0);
-  const tomorrow = new Date(current);
-  tomorrow.setDate(current.getDate() + 1);
-  tomorrow.setHours(0, 0, 0, 0);
-
-  // const currentTimeStamp = Math.floor(current.getTime() / 1000);
-  const tommorowTimeStamp = Math.floor(tomorrow.getTime() / 1000);
-
-  const todaysData = hourlyData.filter((data) => data.dt < tommorowTimeStamp);
+const getHourlyWeather = (hourlyData, timezone) => {
+  const endOfDay = moment().tz(timezone).endOf('day').valueOf();
+  const endTimeStamp = Math.floor(endOfDay / 1000);
+  const todaysData = hourlyData.filter((data) => data.dt < endTimeStamp);
 
   return todaysData;
 };
@@ -51,7 +45,7 @@ export async function getServerSideProps(context) {
       notFound: true,
     };
   }
-  const hourlyWeather = getHourlyWeather(data.hourly);
+  const hourlyWeather = getHourlyWeather(data.hourly, data.timezone);
   return {
     props: {
       city,
