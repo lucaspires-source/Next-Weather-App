@@ -85,7 +85,7 @@ export default function City({
 City.propTypes = {
   hourlyWeather: propTypes.arrayOf(propTypes.object).isRequired,
   city: propTypes.shape({ name: propTypes.string.isRequired }).isRequired,
-  currentWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  // currentWeather: propTypes.arrayOf(propTypes.object).isRequired,
   dailyWeather: propTypes.arrayOf(propTypes.object).isRequired,
   timezone: propTypes.string.isRequired,
 };
