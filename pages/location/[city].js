@@ -2,6 +2,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import propTypes from 'prop-types';
 import moment from 'moment-timezone';
+import Link from 'next/link';
 import TodaysWeather from '../../components/TodaysWeather';
 import cities from '../../lib/city.list.json';
 import HourlyWeather from '../../components/HourlyWeather';
@@ -74,6 +75,7 @@ export default function City({
       </Head>
       <div className="page-wrapper">
         <div className="container">
+          <Link href="/" passHref><a href="dummy" className="back-link">&larr; Home</a></Link>
           <SearchBox />
           <TodaysWeather city={city} weather={dailyWeather[0]} timezone={timezone} />
           <HourlyWeather hourlyWeather={hourlyWeather} timezone={timezone} />
