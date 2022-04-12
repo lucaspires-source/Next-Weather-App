@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 import moment from 'moment-timezone';
 import TodaysWeather from '../../components/TodaysWeather';
 import cities from '../../lib/city.list.json';
+import HourlyWeather from '../../components/HourlyWeather';
 
 const getCity = (param) => {
   const splitCity = param.trim().split('-');
@@ -60,7 +61,7 @@ export async function getServerSideProps(context) {
 export default function City({
   hourlyWeather, city, currentWeather, dailyWeather, timezone,
 }) {
-  console.log(hourlyWeather, currentWeather, timezone);
+  console.log(currentWeather);
   return (
     <div>
       <Head>
@@ -73,6 +74,7 @@ export default function City({
       <div className="page-wrapper">
         <div className="container">
           <TodaysWeather city={city} weather={dailyWeather[0]} timezone={timezone} />
+          <HourlyWeather hourlyWeather={hourlyWeather} timezone={timezone} />
         </div>
       </div>
     </div>
