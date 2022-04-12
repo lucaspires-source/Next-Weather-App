@@ -11,7 +11,9 @@ const nextConfig = {
     }
     return config;
   },
-
+  images: {
+    domains: ['openweathermap.org'],
+  },
 };
 
 module.exports = nextConfig;

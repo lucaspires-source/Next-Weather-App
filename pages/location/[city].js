@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Head from 'next/head';
 import propTypes from 'prop-types';
+import TodaysWeather from '../../components/TodaysWeather';
 import cities from '../../lib/city.list.json';
 
 const getCity = (param) => {
@@ -68,9 +69,17 @@ export default function City({
   return (
     <div>
       <Head>
-        <title>{city.name}</title>
+        <title>
+          {city.name}
+          {' '}
+          Weather
+        </title>
       </Head>
-
+      <div className="page-wrapper">
+        <div className="container">
+          <TodaysWeather city={city} weather={dailyWeather[0]} />
+        </div>
+      </div>
     </div>
   );
 }
