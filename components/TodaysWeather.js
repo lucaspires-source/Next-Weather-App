@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import Image from 'next/image';
 
-export default function TodaysWeather({ city, weather }) {
+export default function TodaysWeather({ city, weather, timezone }) {
   return (
     <div className="today">
       <div className="today__inner">
@@ -27,11 +27,11 @@ export default function TodaysWeather({ city, weather }) {
           <div className="today__sun-times">
             <div>
               <span>Sunrise</span>
-              <span>{moment.unix(weather.sunrise).format('H:mm')}</span>
+              <span>{moment.unix(weather.sunrise).tz(timezone).format('H:mm')}</span>
             </div>
             <div>
               <span>Sunset</span>
-              <span>{moment.unix(weather.sunset).format('H:mm')}</span>
+              <span>{moment.unix(weather.sunset).tz(timezone).format('H:mm')}</span>
             </div>
           </div>
         </div>
@@ -51,4 +51,5 @@ export default function TodaysWeather({ city, weather }) {
 TodaysWeather.propTypes = {
   city: propTypes.shape({ name: propTypes.string.isRequired, country: propTypes.string.isRequired }).isRequired,
   weather: propTypes.arrayOf(propTypes.object).isRequired,
+  timezone: propTypes.string.isRequired,
 };

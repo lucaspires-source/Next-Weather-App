@@ -55,6 +55,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       city,
+      timezone: data.timezone,
       currentWeather: data.current,
       dailyWeather: data.daily,
       hourlyWeather,
@@ -63,9 +64,9 @@ export async function getServerSideProps(context) {
 }
 
 export default function City({
-  hourlyWeather, city, currentWeather, dailyWeather,
+  hourlyWeather, city, currentWeather, dailyWeather, timezone,
 }) {
-  console.log(hourlyWeather, currentWeather, dailyWeather);
+  console.log(hourlyWeather, currentWeather, timezone);
   return (
     <div>
       <Head>
@@ -77,7 +78,7 @@ export default function City({
       </Head>
       <div className="page-wrapper">
         <div className="container">
-          <TodaysWeather city={city} weather={dailyWeather[0]} />
+          <TodaysWeather city={city} weather={dailyWeather[0]} timezone={timezone} />
         </div>
       </div>
     </div>
@@ -89,4 +90,5 @@ City.propTypes = {
   city: propTypes.shape({ name: propTypes.string.isRequired }).isRequired,
   currentWeather: propTypes.arrayOf(propTypes.object).isRequired,
   dailyWeather: propTypes.arrayOf(propTypes.object).isRequired,
+  timezone: propTypes.string.isRequired,
 };
