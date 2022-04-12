@@ -6,6 +6,7 @@ import TodaysWeather from '../../components/TodaysWeather';
 import cities from '../../lib/city.list.json';
 import HourlyWeather from '../../components/HourlyWeather';
 import WeeklyWeather from '../../components/WeeklyWeather';
+import SearchBox from '../../components/SearchBox';
 
 const getCity = (param) => {
   const splitCity = param.trim().split('-');
@@ -73,6 +74,7 @@ export default function City({
       </Head>
       <div className="page-wrapper">
         <div className="container">
+          <SearchBox />
           <TodaysWeather city={city} weather={dailyWeather[0]} timezone={timezone} />
           <HourlyWeather hourlyWeather={hourlyWeather} timezone={timezone} />
           <WeeklyWeather weeklyWeather={dailyWeather} timezone={timezone} />
