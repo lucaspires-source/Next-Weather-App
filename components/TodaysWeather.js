@@ -27,11 +27,11 @@ export default function TodaysWeather({ city, weather }) {
           <div className="today__sun-times">
             <div>
               <span>Sunrise</span>
-              <span>{moment.unix(weather.sunrise).format('LT')}</span>
+              <span>{moment.unix(weather.sunrise).format('H:mm')}</span>
             </div>
             <div>
               <span>Sunset</span>
-              <span>{moment.unix(weather.sunset).format('LT')}</span>
+              <span>{moment.unix(weather.sunset).format('H:mm')}</span>
             </div>
           </div>
         </div>
