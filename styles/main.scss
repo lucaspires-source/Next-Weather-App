@@ -382,6 +382,9 @@ h6 {
 
 .places {
   margin-top: 30px;
+  @media screen and (max-width: 320px) {
+    display: none;
+  }
 
   &__row {
     display: flex;
